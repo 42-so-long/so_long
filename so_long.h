@@ -1,7 +1,7 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# include "mlx/mlx.h"
+# include "./mlx/mlx.h"
 //# include "libft/libft.h"
 # include "get_next_line_bonus.h"
 # include <unistd.h>
@@ -9,6 +9,7 @@
 
 typedef struct s_map
 {
+	char		**total_map;
 	int			row;
 	int			col;
 }				t_map;
@@ -30,7 +31,6 @@ typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
-	char		**map1;
 	t_img		img;
 	t_map		map;
 	t_player	player;
@@ -41,6 +41,9 @@ char	*ft_strnstr(const char *hay, const char *nid, size_t len);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_strlen(const char *s);
 void	*ft_memset(void *p, int c, size_t len);
+void	hk_error(char *str, t_game *game);
+void	ft_putendl_fd(char *s, int fd);
+void	ft_putendl_fd(char *s, int fd);
 
 
 #endif
