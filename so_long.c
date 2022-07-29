@@ -19,5 +19,6 @@ int main(int argc, char **argv)
 	game.img.floor = mlx_xpm_file_to_image(game.mlx, "./map/player.xpm", &game.map.row, &game.map.col);
 	mlx_put_image_to_window(game.mlx, game.win, game.img.floor, 1000 , 500);
 	init_game(&game);
+	// mlx_hook(game.win, )
 	mlx_loop(game.mlx);
 }
