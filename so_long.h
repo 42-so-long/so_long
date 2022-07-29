@@ -12,6 +12,9 @@ typedef struct s_map
 	char		**total_map;
 	int			row;
 	int			col;
+	int			p_cnt;
+	int			c_cnt;
+	int			e_cnt;
 }				t_map;
 
 typedef struct s_img
@@ -43,7 +46,7 @@ size_t	ft_strlen(const char *s);
 void	*ft_memset(void *p, int c, size_t len);
 void	hk_error(char *str, t_game *game);
 void	ft_putendl_fd(char *s, int fd);
-void	ft_putendl_fd(char *s, int fd);
+char	*ft_strrchr(const char *s, int c);
 
 
 #endif
