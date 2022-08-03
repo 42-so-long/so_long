@@ -27,7 +27,6 @@ typedef struct s_sprite
 	struct s_sprite	*next;
 }					t_sprite;
 
-
 typedef struct s_map
 {
 	char		**total_map;
@@ -52,6 +51,7 @@ typedef struct s_player
 {
 	int			walk;
 	int			collect;
+	t_sprite	*sprite;
 	t_sprite	*r_sprite;
 	t_sprite	*l_sprite;
 }				t_player;
@@ -62,6 +62,7 @@ typedef struct s_game
 	void		*win;
 	t_img		img;
 	t_map		map;
+	int			move_status;
 	t_player	player;
 }				t_game;
 

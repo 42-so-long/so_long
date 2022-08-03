@@ -140,19 +140,56 @@ int destroy_win(t_game *game)
 	exit(0);
 }
 
+void	left(int keycode, t_game *game)
+{
+	game->move_status = LEFT;
+	game->player.sprite = game->player.l_sprite;
+}
+
+
+void	leftt(int keycode, t_game *game)
+{
+	game->move_status = LEFT;
+	game->player.sprite = game->player.l_sprite;
+}
+
+void	right(int keycode, t_game *game)
+{
+	game->move_status = RIGHT;
+	game->player.sprite = game->player.r_sprite;
+}
+
+void	up(int keycode, t_game *game)
+{
+	game->move_status = TOP;
+}
+
+void	down(int keycode, t_game *game)
+{
+	game->move_status = BOTTOM;
+
+}
+
 int hk_key_hook(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
 		destroy_win(game);
-	//else if (keycode == KEY_A)
-	//	//left
-	//else if (keycode == KEY_S)
-	//	//down
-	//else if (keycode == KEY_D)
-	//	//right
-	//else if (keycode == KEY_W)
-	//	//up
+	else if (keycode == KEY_A)
+		left(keycode, game);
+	else if (keycode == KEY_D)
+		right(keycode, game);
+	else if (keycode == KEY_S)
+		down(keycode, game);
+	else if (keycode == KEY_W)
+		up(keycode, game);
 	return (0);
+}
+
+int	hk_loop_hook(int keycode, t_game *game)
+{
+
+
+
 }
 
 int main(int argc, char **argv)
@@ -164,13 +201,8 @@ int main(int argc, char **argv)
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, game.map.width * 64, game.map.height * 64, "JUNHYUKI IS CHRISTIAN!!");
 	start_game(&game);
-	//parse_map(&game, argv);
-	// game.map.row *= 1000;
-	// game.map.col *= 1000;
-	// game.img.floor = mlx_xpm_file_to_image(game.mlx, "./map/player.xpm", &game.map.row, &game.map.col);
-	//mlx_put_image_to_window(game.mlx, game.win, game.img.floor, 1000 , 500);
-	//init_game(&game);
 	mlx_hook(game.win, KEY_EXIT, 0, &destroy_win, &game);
 	mlx_key_hook(game.win, hk_key_hook, &game);
+	mlx_loop_hook(game.mlx, hk_loop_hook, &game);
 	mlx_loop(game.mlx);
 }
