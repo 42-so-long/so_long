@@ -25,8 +25,8 @@ void	*ft_make_xpm_img(t_game *game, char *xpmFile)
 void	init_img(t_game *game)
 {
 	game->img.exit = ft_make_xpm_img(game->mlx, "./map/church.xpm");
-	//game->img.item = ft_make_xpm_img(game->mlx, "./map/item.xpm");
-	//game->img.floor = ft_make_xpm_img(game->mlx, "./map/floor.xpm");
+	game->img.item = ft_make_xpm_img(game->mlx, "./map/item.xpm");
+	game->img.floor = ft_make_xpm_img(game->mlx, "./map/floor.xpm");
 
 	//game->img. = ft_make_xpm_img(game->mlx, "./map/floor.xpm");
 }
@@ -50,7 +50,7 @@ void	ft_make_sprite(t_game *game, t_sprite **sprite, char *file, int cnt)
 		free(xpm);
 		if (i != cnt - 1)
 		{
-			tmp->next = malloc(sizeof(t_sprite));
+			tmp->next = calloc(1, (sizeof(t_sprite)));
 			tmp = tmp->next;
 		}
 		i++;

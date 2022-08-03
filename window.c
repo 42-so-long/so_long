@@ -7,7 +7,7 @@ void	*hk_realloc(void *buf, int before_size, int after_size)
 	char	**dst;
 	int		idx;
 	src = (char **)buf;
-	dst = (char**)malloc(sizeof(char *) * after_size);
+	dst = (char**)calloc(after_size, (sizeof(char *)));
 
 	idx = 0;
 	while (idx < before_size)
@@ -127,7 +127,7 @@ void	map_init(t_game *game, char *line)
 	game->map.c_cnt = 0;
 	game->map.p_cnt = 0;
 	game->map.e_cnt = 0;
-	game->map.total_map = (char **)malloc(sizeof(char *));
+	game->map.total_map = (char **)calloc(1, (sizeof(char *)));
 }
 
 void	map_read(t_game *game, int fd)
