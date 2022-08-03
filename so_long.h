@@ -51,6 +51,10 @@ typedef struct s_player
 {
 	int			walk;
 	int			collect;
+	int			x;
+	int			y;
+	int			prev_x;
+	int			prev_y;
 	t_sprite	*sprite;
 	t_sprite	*r_sprite;
 	t_sprite	*l_sprite;
@@ -75,5 +79,7 @@ void	hk_error(char *str, t_game *game);
 void	ft_putendl_fd(char *s, int fd);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
+void	init_player(t_game *game);
+
 
 #endif

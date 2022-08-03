@@ -69,7 +69,6 @@ void draw_wall(t_game *game)
 	int width;
 
 	height = 0;
-	printf("game width : %d || game height : %d\n", game->map.width, game->map.height);
 	while (height < game->map.height)
 	{
 		width = 0;
@@ -90,7 +89,6 @@ void draw_PCE(t_game *game)
 	int width;
 
 	height = 0;
-	printf("game width : %d || game height : %d\n", game->map.width, game->map.height);
 	while (height < game->map.height)
 	{
 		width = 0;
@@ -113,6 +111,10 @@ void	init_game(t_game *game)
 {
 	game->player.collect = 0;
 	game->player.walk = 0;
+	game->player.x = 0;
+	game->player.y = 0;
+	init_player(game);
+	
 }
 void	start_game(t_game *game)
 {
@@ -146,13 +148,6 @@ void	left(int keycode, t_game *game)
 	game->player.sprite = game->player.l_sprite;
 }
 
-
-void	leftt(int keycode, t_game *game)
-{
-	game->move_status = LEFT;
-	game->player.sprite = game->player.l_sprite;
-}
-
 void	right(int keycode, t_game *game)
 {
 	game->move_status = RIGHT;
@@ -167,7 +162,6 @@ void	up(int keycode, t_game *game)
 void	down(int keycode, t_game *game)
 {
 	game->move_status = BOTTOM;
-
 }
 
 int hk_key_hook(int keycode, t_game *game)
@@ -185,11 +179,64 @@ int hk_key_hook(int keycode, t_game *game)
 	return (0);
 }
 
-int	hk_loop_hook(int keycode, t_game *game)
+void	move(t_game *game)
+{
+	printf(" y : %d : x : %d\n", game->player.y, game->player.x);
+	game->player.prev_y = game->player.y;
+	game->player.prev_x = game->player.x;
+	if (game->move_status == LEFT && game->map.total_map[game->player.y / 64][game->player.x / 64 - 1] != '1')
+			game->player.x -= 64;
+	else if (game->move_status == RIGHT && game->map.total_map[game->player.y / 64][game->player.x / 64 + 1] != '1')
+			game->player.x += 64;
+	else if (game->move_status == TOP && game->map.total_map[game->player.y / 64 - 1][game->player.x / 64] != '1')
+			game->player.y -= 64;
+	else if (game->move_status == BOTTOM && game->map.total_map[game->player.y / 64 + 1][game->player.x / 64] != '1')
+			game->player.y += 64;
+}
+
+void	init_player(t_game *game)
 {
 
+	int	i;
+	int	j;
 
+	i = 0;
+	while (i < game->map.height)
+	{
+		j = 0;
+		while(j < game->map.width)
+		{
+			if (game->map.total_map[i][j] == 'P')
+			{
+				game->player.x = j * 64;
+				game->player.y = i * 64;
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
+void	update(t_game *game)
+{
+	//mlx_destroy_image(game->mlx, game->img.player);
+	// draw_wall(game);
+	// draw_PCE(game);
+	// mlx_destroy_image(game->mlx, game->img.player);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.floor, game->player.prev_x, game->player.prev_y);
+	if (game->map.total_map[game->player.prev_y / 64][game->player.prev_x / 64] == 'E')
+		mlx_put_image_to_window(game->mlx, game->win, game->img.exit, game->player.prev_x, game->player.prev_y);
+	if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'C')
+		mlx_put_image_to_window(game->mlx, game->win, game->img.floor, game->player.x, game->player.y);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.player, game->player.x, game->player.y);
+}
+
+int	hk_loop_hook(int keycode, t_game *game)
+{
+	hk_key_hook(keycode, game);
+	move(game);
+	update(game);
+	return (0);
 }
 
 int main(int argc, char **argv)
@@ -203,6 +250,6 @@ int main(int argc, char **argv)
 	start_game(&game);
 	mlx_hook(game.win, KEY_EXIT, 0, &destroy_win, &game);
 	mlx_key_hook(game.win, hk_key_hook, &game);
-	mlx_loop_hook(game.mlx, hk_loop_hook, &game);
+	mlx_hook(game.win, 02, 0, hk_loop_hook, &game);
 	mlx_loop(game.mlx);
 }
