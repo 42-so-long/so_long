@@ -91,6 +91,8 @@ size_t	ft_strlen(const char *s)
 	int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
@@ -110,6 +112,34 @@ void	ft_putendl_fd(char *s, int fd)
 	write(fd, "\n", 1);
 }
 
+char	*ft_strjoin(char *s1, char *s2)
+{
+	size_t	i;
+	size_t	c;
+	char	*str;
+
+	if (!s1)
+	{
+		s1 = (char *)malloc(1 * sizeof(char));
+		s1[0] = '\0';
+	}
+	if (!s1 || !s2)
+		return (NULL);
+	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (str == NULL)
+		return (NULL);
+	i = -1;
+	c = 0;
+	if (s1)
+		while (s1[++i] != '\0')
+			str[i] = s1[i];
+	while (s2[c] != '\0')
+		str[i++] = s2[c++];
+	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	free(s1);
+	return (str);
+}
+
 void	*ft_memset(void *p, int c, size_t len)
 {
 	size_t	i;
@@ -123,43 +153,4 @@ void	*ft_memset(void *p, int c, size_t len)
 		i++;
 	}
 	return ((void *)arr);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char			*new_str;
-	unsigned int	total_len;
-	unsigned int	idx;
-
-	if (!s1 || !s2)
-		return (NULL);
-	idx = 0;
-	total_len = ft_strlen(s1) + ft_strlen(s2);
-	new_str = malloc(sizeof(char) * (total_len + 1));
-	if (!(new_str))
-		return (NULL);
-	ft_memcpy(new_str, s1, ft_strlen(s1));
-	ft_memcpy(new_str + ft_strlen(s1), s2, ft_strlen(s2));
-	new_str[total_len] = '\0';
-	return (new_str);
-}
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	int					idx;
-	unsigned char		*dst2;
-	const unsigned char	*src2;
-
-	idx = 0;
-	if (dst == NULL && src == NULL)
-		return (NULL);
-	dst2 = dst;
-	src2 = src;
-	while (n)
-	{
-		dst2[idx] = src2[idx];
-		n--;
-		idx++;
-	}
-	return (dst2);
 }

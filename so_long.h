@@ -31,8 +31,8 @@ typedef struct s_sprite
 typedef struct s_map
 {
 	char		**total_map;
-	int			row;
-	int			col;
+	int			width;
+	int			height;
 	int			p_cnt;
 	int			c_cnt;
 	int			e_cnt;
@@ -72,8 +72,6 @@ void	*ft_memset(void *p, int c, size_t len);
 void	hk_error(char *str, t_game *game);
 void	ft_putendl_fd(char *s, int fd);
 char	*ft_strrchr(const char *s, int c);
-char	*ft_strjoin(char const *s1, char const *s2);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-
+char	*ft_strjoin(char *s1, char *s2);
 
 #endif

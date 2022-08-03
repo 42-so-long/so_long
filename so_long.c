@@ -25,8 +25,9 @@ void	*ft_make_xpm_img(t_game *game, char *xpmFile)
 void	init_img(t_game *game)
 {
 	game->img.exit = ft_make_xpm_img(game->mlx, "./map/church.xpm");
-	game->img.item = ft_make_xpm_img(game->mlx, "./map/item.xpm");
-	game->img.floor = ft_make_xpm_img(game->mlx, "./map/floor.xpm");
+	//game->img.item = ft_make_xpm_img(game->mlx, "./map/item.xpm");
+	//game->img.floor = ft_make_xpm_img(game->mlx, "./map/floor.xpm");
+
 	//game->img. = ft_make_xpm_img(game->mlx, "./map/floor.xpm");
 }
 
@@ -64,21 +65,23 @@ void	init_sprite(t_game *game)
 
 void draw_img(t_game *game, int target)
 {
-	int	col;
-	int row;
+	int	height;
+	int width;
 
-	col = 0;
-	while (col < game->map.col)
+	height = 0;
+	printf("game width : %d || game height : %d\n", game->map.width, game->map.height);
+	while (height < game->map.height)
 	{
-		while (row < game->map.row)
+		width = 0;
+		while (width < game->map.width)
 		{
-			if (game->map.total_map[col][row] == 1)
-				mlx_put_image_to_window(game->mlx, game->win, game->img.wall, col * 64, row * 64);
+			if (game->map.total_map[height][width] == target)
+				mlx_put_image_to_window(game->mlx, game->win, game->img.wall, width * 64, height * 64);
 			else
-				mlx_put_image_to_window(game->mlx, game->win, game->img.floor, col * 64, row * 64);
-			row++;
+				mlx_put_image_to_window(game->mlx, game->win, game->img.floor, width * 64, height * 64);
+			width++;
 		}
-		col++;
+		height++;
 	}
 }
 
@@ -92,7 +95,7 @@ void	start_game(t_game *game)
 {
 	init_game(game);
 	init_img(game);
-	draw_img(game, 1);
+	//draw_img(game, 1);
 }
 
 //void	valid_map()
@@ -130,12 +133,12 @@ int hk_key_hook(int keycode, t_game *game)
 
 int main(int argc, char **argv)
 {
-	t_game game;
+	t_game	game;
 	if (argc != 2)
 		hk_error("Wrong Argument", &game);
 	hk_window(&game, argv);
 	game.mlx = mlx_init();
-	game.win = mlx_new_window(game.mlx, 500, 500, "JUNHYUKI IS CHRISTIAN!!");
+	game.win = mlx_new_window(game.mlx, game.map.width * 64, game.map.height * 64, "JUNHYUKI IS CHRISTIAN!!");
 	start_game(&game);
 	//parse_map(&game, argv);
 	// game.map.row *= 1000;

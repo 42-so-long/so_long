@@ -40,7 +40,7 @@ void	check_rec(t_game *game)
 
 	i = 0;
 	tmp = ft_strlen(game->map.total_map[i]);
-	while (i < game->map.col)
+	while (i < game->map.height)
 	{
 		if (tmp != ft_strlen(game->map.total_map[i]))
 			hk_error("Is not rec", game);
@@ -51,31 +51,31 @@ void	check_rec(t_game *game)
 
 void	check_wall(t_game *game)
 {
-	int	col;
-	int	row;
+	int	height;
+	int	width;
 
-	col = 0;
-	while (col < game->map.col)
+	height = 0;
+	while (height < game->map.height)
 	{
-		row = 0;
-		if (col == 0 || col == game->map.col - 1)
+		width = 0;
+		if (height == 0 || height == game->map.height - 1)
 		{
-			while (row < game->map.row)
+			while (width < game->map.width)
 			{
-				if (game->map.total_map[col][row] != '1')
+				if (game->map.total_map[height][width] != '1')
 				{
-					hk_error("WALL IS NOT SURROUND BY WALL - row", game);
+					hk_error("WALL IS NOT SURROUND BY WALL - width", game);
 					break ;
 				}
-				row++;
+				width++;
 			}
 		}
-		else if (game->map.total_map[col][0] != '1' || game->map.total_map[col][game->map.row - 1] != '1')
+		else if (game->map.total_map[height][0] != '1' || game->map.total_map[height][game->map.width - 1] != '1')
 		{
-			hk_error("WALL IS NOT SURROUND BY WALL - col", game);
+			hk_error("WALL IS NOT SURROUND BY WALL - height", game);
 			break ;
 		}
-		col++;
+		height++;
 	}
 }
 
@@ -85,10 +85,10 @@ void	count_PCE(t_game *game)
 	int	j;
 
 	i = 0;
-	while (i < game->map.col)
+	while (i < game->map.height)
 	{
 		j = 0;
-		while(j < game->map.row)
+		while(j < game->map.width)
 		{
 			if (game->map.total_map[i][j] == 'P')
 				game->map.p_cnt++;
@@ -122,8 +122,8 @@ void	valid_map(t_game *game)
 
 void	map_init(t_game *game, char *line)
 {
-	game->map.row = ft_strlen(line);
-	game->map.col = 0;
+	game->map.height = 0;
+	game->map.width = ft_strlen(line);
 	game->map.c_cnt = 0;
 	game->map.p_cnt = 0;
 	game->map.e_cnt = 0;
@@ -138,12 +138,12 @@ void	map_read(t_game *game, int fd)
 	if (line == NULL)
 		return ;
 	map_init(game, line);
-	game->map.total_map[game->map.col] = line;
+	game->map.total_map[game->map.height] = line;
 	while (line)
 	{
-		game->map.col++;
-		game->map.total_map = (char **)hk_realloc(game->map.total_map, game->map.col - 1, game->map.col);
-		game->map.total_map[game->map.col - 1] = line;
+		game->map.height++;
+		game->map.total_map = (char **)hk_realloc(game->map.total_map, game->map.height - 1, game->map.height);
+		game->map.total_map[game->map.height - 1] = line;
 		line = get_line(fd);
 	}
 	valid_map(game);
@@ -160,10 +160,10 @@ void	hk_window(t_game *game, char **argv)
 	if (!ft_strnstr(argv[1], ".ber", ft_strlen(argv[1])))
 		hk_error("Wrong argument", game);
 	map_read(game, fd);
-	//game->map.row = hk_window_size(fd, &col) * 64;
-	//if (col <= 1)
-	//	hk_error("Too short file content", game);
-	//game->map.col = col * 64;
+	// game->map.row = hk_window_size(fd, &col) * 64;
+	// if (col <= 1)
+	// 	hk_error("Too short file content", game);
+	// game->map.col = col * 64;
 }
 
 
