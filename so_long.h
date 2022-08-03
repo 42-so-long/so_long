@@ -7,6 +7,27 @@
 # include <unistd.h>
 # include <fcntl.h>
 
+# define KEY_EXIT 17
+# define KEY_W 13
+# define KEY_S 1
+# define KEY_D 2
+# define KEY_A 0
+# define KEY_ESC 53
+# define KEY_SPACE 49
+
+# define NONE 0
+# define LEFT 1
+# define RIGHT 2
+# define BOTTOM 3
+# define TOP 4
+
+typedef struct s_sprite
+{
+	void			*img;
+	struct s_sprite	*next;
+}					t_sprite;
+
+
 typedef struct s_map
 {
 	char		**total_map;
@@ -21,13 +42,17 @@ typedef struct s_img
 {
 	void		*wall;
 	void		*floor;
-	void		*coin;
+	void		*item;
+	void		*player;
+	void		*exit;
 }				t_img;
 
 typedef struct s_player
 {
 	int			walk;
 	int			collect;
+	t_sprite	*r_sprite;
+	t_sprite	*l_sprite;
 }				t_player;
 
 typedef struct s_game
@@ -47,6 +72,8 @@ void	*ft_memset(void *p, int c, size_t len);
 void	hk_error(char *str, t_game *game);
 void	ft_putendl_fd(char *s, int fd);
 char	*ft_strrchr(const char *s, int c);
+char	*ft_strjoin(char const *s1, char const *s2);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 
 #endif
