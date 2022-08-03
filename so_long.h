@@ -21,6 +21,9 @@
 # define BOTTOM 3
 # define TOP 4
 
+# define SUCCESS 1
+# define FAIL 0
+
 typedef struct s_sprite
 {
 	void			*img;
@@ -45,16 +48,20 @@ typedef struct s_img
 	void		*player;
 	void		*enemy;
 	void		*exit;
+	void		*cross;
 }				t_img;
 
 typedef struct s_player
 {
-	int			walk;
+	int			move_count;
 	int			collect;
 	int			x;
 	int			y;
 	int			prev_x;
 	int			prev_y;
+	int			collect_status;
+	int			exit_flag;
+	int			move_status;
 	t_sprite	*sprite;
 	t_sprite	*r_sprite;
 	t_sprite	*l_sprite;
@@ -66,7 +73,6 @@ typedef struct s_game
 	void		*win;
 	t_img		img;
 	t_map		map;
-	int			move_status;
 	t_player	player;
 }				t_game;
 
@@ -80,6 +86,7 @@ void	ft_putendl_fd(char *s, int fd);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
 void	init_player(t_game *game);
+char	*ft_itoa(int n);
 
 
 #endif

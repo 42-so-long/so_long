@@ -1,11 +1,5 @@
 #include "so_long.h"
 
-void	hk_error(char *str, t_game *game)
-{
-	// map_destroy(game);
-	ft_putendl_fd(str, 2);
-	exit(1);
-}
 
 void	map_destroy(t_game *game)
 {
@@ -14,6 +8,18 @@ void	map_destroy(t_game *game)
 	i = 0;
 	while (game->map.total_map[i])
 		free(game->map.total_map[i++]);
+}
+
+void	hk_error(char *str, t_game *game)
+{
+	// if (game->player.exit_flag == SUCCESS)
+	// 	mlx_destroy_window(game->mlx, game->win);
+	
+	map_destroy(game);
+	ft_putendl_fd(str, 2);
+	if (game->player.exit_flag == SUCCESS)
+		exit(0);
+	exit(1);
 }
 
 char	*ft_strrchr(const char *s, int c)
@@ -153,4 +159,69 @@ void	*ft_memset(void *p, int c, size_t len)
 		i++;
 	}
 	return ((void *)arr);
+}
+
+void	ft_put(char *str, int len, int n)
+{
+	int	i;
+
+	i = 0;
+	if (n == 0)
+		str[i] = 48;
+	while (n != 0)
+	{
+		str[len - i - 1] = n % 10 + '0';
+		n /= 10;
+		i++;
+	}
+}
+
+int	ft_len(int n)
+{
+	int	len;
+
+	len = 0;
+	if (n < 0)
+	{
+		if (n == -2147483648)
+			return (10);
+		else
+			n = -n;
+	}
+	else if (n == 0)
+		return (1);
+	while (n != 0)
+	{
+		len++;
+		n /= 10;
+	}
+	return (len);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*str;
+	int		minus;
+	int		len;
+
+	minus = (n < 0);
+	len = ft_len(n);
+	str = (char *)malloc(sizeof(char) * (len + minus + 1));
+	if (str == 0)
+		return (NULL);
+	str[len + minus] = '\0';
+	if (n == -2147483648)
+	{
+		str[10] = '8';
+		n = 214748364;
+		str[0] = '-';
+		len--;
+	}
+	else if (minus == 1)
+	{
+		str[0] = '-';
+		n = -n;
+	}
+	ft_put(&str[minus], len, n);
+	return (&str[0]);
 }

@@ -29,6 +29,7 @@ void	init_img(t_game *game)
 	game->img.floor = ft_make_xpm_img(game, "./map/floor.xpm");
 	game->img.wall = ft_make_xpm_img(game, "./map/wall.xpm");
 	game->img.player = ft_make_xpm_img(game, "./map/player0.xpm");
+	game->img.cross = ft_make_xpm_img(game, "./map/cross.xpm");
 }
 
 void	ft_make_sprite(t_game *game, t_sprite **sprite, char *file, int cnt)
@@ -81,6 +82,9 @@ void draw_wall(t_game *game)
 		}
 		height++;
 	}
+	mlx_put_image_to_window(game->mlx, game->win, game->img.floor, 0, 0);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.cross, 0, 0);
+	mlx_string_put(game->mlx, game->win, 28, 32, 0, ft_itoa(0));	
 }
 
 void draw_PCE(t_game *game)
@@ -110,9 +114,11 @@ void draw_PCE(t_game *game)
 void	init_game(t_game *game)
 {
 	game->player.collect = 0;
-	game->player.walk = 0;
+	game->player.move_count = 0;
 	game->player.x = 0;
 	game->player.y = 0;
+	game->player.collect_status = FAIL;
+	game->player.exit_flag = FAIL;
 	init_player(game);
 	
 }
@@ -144,24 +150,24 @@ int destroy_win(t_game *game)
 
 void	left(int keycode, t_game *game)
 {
-	game->move_status = LEFT;
+	game->player.move_status = LEFT;
 	game->player.sprite = game->player.l_sprite;
 }
 
 void	right(int keycode, t_game *game)
 {
-	game->move_status = RIGHT;
+	game->player.move_status = RIGHT;
 	game->player.sprite = game->player.r_sprite;
 }
 
 void	up(int keycode, t_game *game)
 {
-	game->move_status = TOP;
+	game->player.move_status = TOP;
 }
 
 void	down(int keycode, t_game *game)
 {
-	game->move_status = BOTTOM;
+	game->player.move_status = BOTTOM;
 }
 
 int hk_key_hook(int keycode, t_game *game)
@@ -176,6 +182,8 @@ int hk_key_hook(int keycode, t_game *game)
 		down(keycode, game);
 	else if (keycode == KEY_W)
 		up(keycode, game);
+	else
+		game->player.move_status = NONE;
 	return (0);
 }
 
@@ -184,14 +192,17 @@ void	move(t_game *game)
 	printf(" y : %d : x : %d\n", game->player.y, game->player.x);
 	game->player.prev_y = game->player.y;
 	game->player.prev_x = game->player.x;
-	if (game->move_status == LEFT && game->map.total_map[game->player.y / 64][game->player.x / 64 - 1] != '1')
+	if (game->player.move_status == LEFT && game->map.total_map[game->player.y / 64][game->player.x / 64 - 1] != '1')
 			game->player.x -= 64;
-	else if (game->move_status == RIGHT && game->map.total_map[game->player.y / 64][game->player.x / 64 + 1] != '1')
+	else if (game->player.move_status == RIGHT && game->map.total_map[game->player.y / 64][game->player.x / 64 + 1] != '1')
 			game->player.x += 64;
-	else if (game->move_status == TOP && game->map.total_map[game->player.y / 64 - 1][game->player.x / 64] != '1')
+	else if (game->player.move_status == TOP && game->map.total_map[game->player.y / 64 - 1][game->player.x / 64] != '1')
 			game->player.y -= 64;
-	else if (game->move_status == BOTTOM && game->map.total_map[game->player.y / 64 + 1][game->player.x / 64] != '1')
+	else if (game->player.move_status == BOTTOM && game->map.total_map[game->player.y / 64 + 1][game->player.x / 64] != '1')
 			game->player.y += 64;
+	else
+		return ;
+	game->player.move_count++;
 }
 
 void	init_player(t_game *game)
@@ -217,6 +228,11 @@ void	init_player(t_game *game)
 	}
 }
 
+void	success_game(t_game *game)
+{
+	game->player.exit_flag = SUCCESS;
+	hk_error("SUCCESS\n", game);
+}
 void	update(t_game *game)
 {
 	//mlx_destroy_image(game->mlx, game->img.player);
@@ -227,8 +243,22 @@ void	update(t_game *game)
 	if (game->map.total_map[game->player.prev_y / 64][game->player.prev_x / 64] == 'E')
 		mlx_put_image_to_window(game->mlx, game->win, game->img.exit, game->player.prev_x, game->player.prev_y);
 	if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'C')
+	{
+		game->player.collect++;
+		if (game->player.collect == game->map.c_cnt)
+			game->player.collect_status = SUCCESS;
 		mlx_put_image_to_window(game->mlx, game->win, game->img.floor, game->player.x, game->player.y);
+		game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img.player, game->player.x, game->player.y);
+	if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'E' && game->player.collect_status == SUCCESS)
+		success_game(game);
+}
+
+void	out_move_cnt(t_game *game)
+{
+	mlx_put_image_to_window(game->mlx, game->win, game->img.cross, 0, 0);
+	mlx_string_put(game->mlx, game->win, 28, 32, 0, ft_itoa(game->player.move_count));
 }
 
 int	hk_loop_hook(int keycode, t_game *game)
@@ -236,6 +266,7 @@ int	hk_loop_hook(int keycode, t_game *game)
 	hk_key_hook(keycode, game);
 	move(game);
 	update(game);
+	out_move_cnt(game);
 	return (0);
 }
 
