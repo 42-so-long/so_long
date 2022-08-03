@@ -44,6 +44,7 @@ typedef struct s_img
 	void		*floor;
 	void		*item;
 	void		*player;
+	void		*enemy;
 	void		*exit;
 }				t_img;
 

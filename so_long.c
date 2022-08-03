@@ -24,11 +24,11 @@ void	*ft_make_xpm_img(t_game *game, char *xpmFile)
 
 void	init_img(t_game *game)
 {
-	game->img.exit = ft_make_xpm_img(game->mlx, "./map/church.xpm");
-	game->img.item = ft_make_xpm_img(game->mlx, "./map/item.xpm");
-	game->img.floor = ft_make_xpm_img(game->mlx, "./map/floor.xpm");
-
-	//game->img. = ft_make_xpm_img(game->mlx, "./map/floor.xpm");
+	game->img.exit = ft_make_xpm_img(game, "./map/church.xpm");
+	game->img.item = ft_make_xpm_img(game, "./map/item.xpm");
+	game->img.floor = ft_make_xpm_img(game, "./map/floor.xpm");
+	game->img.wall = ft_make_xpm_img(game, "./map/wall.xpm");
+	game->img.player = ft_make_xpm_img(game, "./map/player0.xpm");
 }
 
 void	ft_make_sprite(t_game *game, t_sprite **sprite, char *file, int cnt)
@@ -50,7 +50,7 @@ void	ft_make_sprite(t_game *game, t_sprite **sprite, char *file, int cnt)
 		free(xpm);
 		if (i != cnt - 1)
 		{
-			tmp->next = calloc(1, (sizeof(t_sprite)));
+			tmp->next = malloc(sizeof(t_sprite));
 			tmp = tmp->next;
 		}
 		i++;
@@ -63,7 +63,7 @@ void	init_sprite(t_game *game)
 	ft_make_sprite(game, &game->player.r_sprite, "player", 10);
 }
 
-void draw_img(t_game *game, int target)
+void draw_wall(t_game *game)
 {
 	int	height;
 	int width;
@@ -75,10 +75,33 @@ void draw_img(t_game *game, int target)
 		width = 0;
 		while (width < game->map.width)
 		{
-			if (game->map.total_map[height][width] == target)
+			mlx_put_image_to_window(game->mlx, game->win, game->img.floor, width * 64, height * 64);
+			if (game->map.total_map[height][width] == '1')
 				mlx_put_image_to_window(game->mlx, game->win, game->img.wall, width * 64, height * 64);
-			else
-				mlx_put_image_to_window(game->mlx, game->win, game->img.floor, width * 64, height * 64);
+			width++;
+		}
+		height++;
+	}
+}
+
+void draw_PCE(t_game *game)
+{
+	int	height;
+	int width;
+
+	height = 0;
+	printf("game width : %d || game height : %d\n", game->map.width, game->map.height);
+	while (height < game->map.height)
+	{
+		width = 0;
+		while (width < game->map.width)
+		{
+			if (game->map.total_map[height][width] == 'P')
+				mlx_put_image_to_window(game->mlx, game->win, game->img.player, width * 64, height * 64);
+			else if (game->map.total_map[height][width] == 'C')
+				mlx_put_image_to_window(game->mlx, game->win, game->img.item, width * 64, height * 64);
+			else if (game->map.total_map[height][width] == 'E')
+				mlx_put_image_to_window(game->mlx, game->win, game->img.exit, width * 64, height * 64);
 			width++;
 		}
 		height++;
@@ -95,7 +118,8 @@ void	start_game(t_game *game)
 {
 	init_game(game);
 	init_img(game);
-	//draw_img(game, 1);
+	draw_wall(game);
+	draw_PCE(game);
 }
 
 //void	valid_map()

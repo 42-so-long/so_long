@@ -7,7 +7,7 @@ void	*hk_realloc(void *buf, int before_size, int after_size)
 	char	**dst;
 	int		idx;
 	src = (char **)buf;
-	dst = (char**)calloc(after_size, (sizeof(char *)));
+	dst = (char**)malloc((sizeof(char *) * after_size));
 
 	idx = 0;
 	while (idx < before_size)
