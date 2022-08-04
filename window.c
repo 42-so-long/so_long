@@ -96,6 +96,8 @@ void	count_PCE(t_game *game)
 				game->map.c_cnt++;
 			else if (game->map.total_map[i][j] == 'E')
 				game->map.e_cnt++;
+			else if (game->map.total_map[i][j] == 'e')
+				game->map.enemy_cnt++;
 			j++;
 		}
 		i++;
@@ -127,6 +129,7 @@ void	map_init(t_game *game, char *line)
 	game->map.c_cnt = 0;
 	game->map.p_cnt = 0;
 	game->map.e_cnt = 0;
+	game->map.enemy_cnt = 0;
 	game->map.total_map = (char **)calloc(1, (sizeof(char *)));
 }
 

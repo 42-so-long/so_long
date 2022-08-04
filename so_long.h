@@ -24,6 +24,9 @@
 # define SUCCESS 1
 # define FAIL 0
 
+# define PLAYER 0
+# define ENEMY 1
+
 typedef struct s_sprite
 {
 	void			*img;
@@ -38,6 +41,7 @@ typedef struct s_map
 	int			p_cnt;
 	int			c_cnt;
 	int			e_cnt;
+	int			enemy_cnt;
 }				t_map;
 
 typedef struct s_img
@@ -46,10 +50,18 @@ typedef struct s_img
 	void		*floor;
 	void		*item;
 	void		*player;
-	void		*enemy;
 	void		*exit;
 	void		*cross;
+	void		*enemy;
 }				t_img;
+
+typedef struct s_enemy
+{
+	t_sprite	*sprite;
+	int			*x;
+	int			*y;
+}				t_enemy;
+
 
 typedef struct s_player
 {
@@ -74,6 +86,7 @@ typedef struct s_game
 	t_img		img;
 	t_map		map;
 	t_player	player;
+	t_enemy		enemy;
 }				t_game;
 
 void	hk_window(t_game *game, char **argv);
