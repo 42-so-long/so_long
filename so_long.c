@@ -39,17 +39,24 @@ void	ft_make_sprite(t_game *game, t_sprite **sprite, char *file, int cnt)
 	int			i;
 	char		*xpm;
 	char		*temp;
+	char		*file_dir;
 	int			num;
 
 	i = 0;
 	tmp = *sprite;
+	printf("WHAT THE HECK ? \n");
+
+	printf("FILES! :%s\n", file);
 	while (i < cnt)
 	{
 		num = '0' + i;
-		temp = ft_strjoin(file, (char *)&num);
+		file_dir = ft_strdup(file);
+		temp = ft_strjoin(file_dir, (char *)&num);
+		//printf("HEY THIS IS TMEP : |%s|\n", temp);
+		printf("TEMP! :%s\n", temp);
 		xpm = ft_strjoin(temp, ".xpm");
+		//printf("HEY THIS IS XPM : |%s|\n", xpm);
 		tmp->img = ft_make_xpm_img(game, xpm);
-		free(temp);
 		free(xpm);
 		if (i != cnt - 1)
 		{
@@ -65,15 +72,18 @@ void	ft_make_sprite_rev(t_game *game, t_sprite **sprite, char *file, int cnt)
 	t_sprite	*tmp;
 	char		*xpm;
 	char		*temp;
+	char		*file_dir;
 	int			num;
 
 	while (cnt--)
 	{
 		num = '0' + cnt;
-		temp = ft_strjoin(file, (char *)&num);
+		file_dir = ft_strdup(file);
+		temp = ft_strjoin(file_dir, (char *)&num);
+		//printf("HEY THIS IS TMEP : |%s|\n", temp);
 		xpm = ft_strjoin(temp, ".xpm");
+		//printf("HEY THIS IS XPM : |%s|\n", xpm);
 		tmp->img = ft_make_xpm_img(game, xpm);
-		free(temp);
 		free(xpm);
 		if (cnt != 0)
 		{
@@ -85,13 +95,23 @@ void	ft_make_sprite_rev(t_game *game, t_sprite **sprite, char *file, int cnt)
 
 void	init_sprite(t_game *game, int	flag)
 {
+	char	*str;
+	t_player	*player;
+
+	player = &game->player;
+	//game->player.r_sprite = (t_sprite *)malloc(sizeof(t_sprite));
+	//game->player.l_sprite = (t_sprite *)malloc(sizeof(t_sprite));
 	if (flag == PLAYER)
 	{
-		ft_make_sprite(game, &game->player.r_sprite, "./map/player", 10);
-		ft_make_sprite_rev(game, &game->player.l_sprite, "./map/player", 10);
+		str = ft_strdup("./map/player");
+		ft_make_sprite(game, &game->player.r_sprite, str, 10);
+		//ft_make_sprite_rev(game, &game->player.l_sprite, str, 10);
 	}
 	else if (flag == ENEMY)
-		ft_make_sprite(game, &game->enemy.sprite, "./map/enemy", 4);
+	{
+		str = ft_strdup("./map/enemy");
+		ft_make_sprite(game, &game->enemy.sprite, str, 4);
+	}
 }
 
 void draw_wall(t_game *game)
@@ -179,6 +199,8 @@ void	init_game(t_game *game)
 	game->player.y = 0;
 	game->player.collect_status = FAIL;
 	game->player.exit_flag = FAIL;
+	game->player.r_sprite = 0;
+	game->player.l_sprite = 0;
 	init_player(game);
 	init_enemy(game);
 	
@@ -272,7 +294,7 @@ void	init_player(t_game *game)
 	int	j;
 
 	i = 0;
-	init_sprite(game, PLAYER);
+	//init_sprite(game, PLAYER);
 	while (i < game->map.height)
 	{
 		j = 0;
@@ -339,8 +361,8 @@ void	update(t_game *game)
 		mlx_put_image_to_window(game->mlx, game->win, game->img.floor, game->player.x, game->player.y);
 		game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
 	}
-	// mlx_put_image_to_window(game->mlx, game->win, game->img.player, game->player.x, game->player.y);
-	move_player(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.player, game->player.x, game->player.y);
+	//move_player(game);
 	if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'E' && game->player.collect_status == SUCCESS)
 		success_game(game);
 }
