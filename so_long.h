@@ -27,6 +27,9 @@
 # define PLAYER 0
 # define ENEMY 1
 
+# define ON 0
+# define OFF 1
+
 typedef struct s_sprite
 {
 	void			*img;
@@ -57,7 +60,6 @@ typedef struct s_img
 
 typedef struct s_enemy
 {
-	t_sprite	*sprite;
 	int			*x;
 	int			*y;
 }				t_enemy;
@@ -74,19 +76,19 @@ typedef struct s_player
 	int			collect_status;
 	int			exit_flag;
 	int			move_status;
-	t_sprite	*sprite;
-	t_sprite	*r_sprite;
-	t_sprite	*l_sprite;
 }				t_player;
 
 typedef struct s_game
 {
+	int			status;
 	void		*mlx;
 	void		*win;
 	t_img		img;
 	t_map		map;
 	t_player	player;
 	t_enemy		enemy;
+	t_sprite	*l_sprite;
+	t_sprite	*r_sprite;
 }				t_game;
 
 void	hk_window(t_game *game, char **argv);
@@ -98,8 +100,32 @@ void	hk_error(char *str, t_game *game);
 void	ft_putendl_fd(char *s, int fd);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strjoin(char *s1, char *s2);
-void	init_player(t_game *game);
 char	*ft_itoa(int n);
+int		hk_hook(int keycode, t_game *game);
+void	move(t_game *game);
+void	update(t_game *game);
+void	success_game(t_game *game);
+void	die_game(t_game *game);
+void	out_move_cnt(t_game *game);
+void	start_game(t_game *game);
+void	init_game(t_game *game);
+void	init_player(t_game *game);
+void	init_sprite(t_game *game, int	flag);
+void	init_enemy(t_game *game);
+void	init_img(t_game *game);
+void	draw_wall(t_game *game);
+void	draw_PCE(t_game *game);
+int		hk_key_hook(int keycode, t_game *game);
+void	*ft_make_xpm_img(t_game *game, char *xpmFile);
+void	hk_make_rsprite(t_game *game);
+void	hk_make_lsprite(t_game *game);
+int		destroy_win(t_game *game);
+void	left(int keycode, t_game *game);
+void	right(int keycode, t_game *game);
+void	up(int keycode, t_game *game);
+void	down(int keycode, t_game *game);
+void	move_player(t_game *game);
+int		hk_loop_hook(int keycode, t_game *game);
 
 
 #endif

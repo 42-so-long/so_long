@@ -223,7 +223,7 @@ static char *result[] = {
 "yX c #F4F2EF",
 "uX c #F5F4F4",
 "iX c #F9F8F7",
-"pX c #FFFFFF",
+"pX c #FFFFFFFF",
 /* pixels */
 "pXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpX",
 "pXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpXpX",
