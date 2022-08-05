@@ -270,11 +270,11 @@ void	move_player(t_game *game)
 			game->flag = 0;
 			i = 0;
 			game->player.x -= 64;
-		}
-		if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
-		{
-			// game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
-			game->player.collect++;
+			if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
+			{
+				game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+				game->player.collect++;
+			}
 		}
 	}
 	else if (game->flag == RIGHT)
@@ -291,11 +291,11 @@ void	move_player(t_game *game)
 			game->flag = 0;
 			i = 0;
 			game->player.x += 64;
-		}
-		if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
-		{
-			// game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
-			game->player.collect++;
+				if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
+				{
+					game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+					game->player.collect++;
+				}
 		}
 	}
 	else if (game->flag == TOP)
@@ -320,11 +320,11 @@ void	move_player(t_game *game)
 			game->flag = 0;
 			i = 0;
 			game->player.y -= 64;
-		}
-		if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
-		{
-			// game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
-			game->player.collect++;
+			if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
+			{
+				game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+				game->player.collect++;
+			}
 		}
 	}
 	else if (game->flag == BOTTOM)
@@ -349,11 +349,11 @@ void	move_player(t_game *game)
 			game->flag = 0;
 			i = 0;
 			game->player.y += 64;
-		}
-		if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
-		{
-			// game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
-			game->player.collect++;
+			if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
+			{
+				game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+				game->player.collect++;
+			}
 		}
 	}
 }
