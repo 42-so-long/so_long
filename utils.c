@@ -14,8 +14,12 @@ void	hk_error(char *str, t_game *game)
 {
 	// if (game->player.exit_flag == SUCCESS)
 	// 	mlx_destroy_window(game->mlx, game->win);
-	
-	map_destroy(game);
+	//if (game == NULL)
+	//{
+	//	ft_putendl_fd(str, 2);
+	//	exit(0);	
+	//}
+	//map_destroy(game);
 	ft_putendl_fd(str, 2);
 	if (game->player.exit_flag == SUCCESS)
 		exit(0);

@@ -13,7 +13,7 @@ void	start_game(t_game *game)
 
 void	init_game(t_game *game)
 {
-	game->player.collect = 0;
+	game->player.collect = 1;
 	game->player.move_count = 0;
 	game->player.x = 0;
 	game->player.y = 0;
@@ -137,7 +137,7 @@ void draw_PCE(t_game *game)
 		width = 0;
 		while (width < game->map.width)
 		{
-			if (game->map.total_map[height][width] == 'P')
+			if (game->map.total_map[height][width] == 'P' && game->status == OFF)
 				mlx_put_image_to_window(game->mlx, game->win, game->img.player, width * 64, height * 64);
 			else if (game->map.total_map[height][width] == 'C')
 				mlx_put_image_to_window(game->mlx, game->win, game->img.item, width * 64, height * 64);

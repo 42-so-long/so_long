@@ -35,9 +35,9 @@ void	hk_make_rsprite(t_game *game)
 	printf("next %p\n", (char *)game->r_sprite->img);
 	game->r_sprite->next = malloc(sizeof(t_sprite));
 	game->r_sprite = game->r_sprite->next;
-	game->r_sprite->img = ft_make_xpm_img(game, "./map/player2.xpm");
-	game->r_sprite->next = malloc(sizeof(t_sprite));
-	game->r_sprite = game->r_sprite->next;
+	// game->r_sprite->img = ft_make_xpm_img(game, "./map/player2.xpm");
+	// game->r_sprite->next = malloc(sizeof(t_sprite));
+	// game->r_sprite = game->r_sprite->next;
 	game->r_sprite->img = ft_make_xpm_img(game, "./map/player3.xpm");
 	game->r_sprite->next = malloc(sizeof(t_sprite));
 	game->r_sprite = game->r_sprite->next;
@@ -47,9 +47,9 @@ void	hk_make_rsprite(t_game *game)
 	game->r_sprite->img = ft_make_xpm_img(game, "./map/player5.xpm");
 	game->r_sprite->next = malloc(sizeof(t_sprite));
 	game->r_sprite = game->r_sprite->next;
-	game->r_sprite->img = ft_make_xpm_img(game, "./map/player6.xpm");
-	game->r_sprite->next = malloc(sizeof(t_sprite));
-	game->r_sprite = game->r_sprite->next;
+	// game->r_sprite->img = ft_make_xpm_img(game, "./map/player6.xpm");
+	// game->r_sprite->next = malloc(sizeof(t_sprite));
+	// game->r_sprite = game->r_sprite->next;
 	game->r_sprite->img = ft_make_xpm_img(game, "./map/player7.xpm");
 	game->r_sprite->next = malloc(sizeof(t_sprite));
 	game->r_sprite = game->r_sprite->next;
@@ -75,9 +75,9 @@ void	hk_make_lsprite(t_game *game)
 	printf("next %p\n", (char *)game->l_sprite->img);
 	game->l_sprite->next = malloc(sizeof(t_sprite));
 	game->l_sprite = game->l_sprite->next;
-	game->l_sprite->img = ft_make_xpm_img(game, "./map/player2.xpm");
-	game->l_sprite->next = malloc(sizeof(t_sprite));
-	game->l_sprite = game->l_sprite->next;
+	// game->l_sprite->img = ft_make_xpm_img(game, "./map/player2.xpm");
+	// game->l_sprite->next = malloc(sizeof(t_sprite));
+	// game->l_sprite = game->l_sprite->next;
 	game->l_sprite->img = ft_make_xpm_img(game, "./map/player3.xpm");
 	game->l_sprite->next = malloc(sizeof(t_sprite));
 	game->l_sprite = game->l_sprite->next;
@@ -87,9 +87,9 @@ void	hk_make_lsprite(t_game *game)
 	game->l_sprite->img = ft_make_xpm_img(game, "./map/player5.xpm");
 	game->l_sprite->next = malloc(sizeof(t_sprite));
 	game->l_sprite = game->l_sprite->next;
-	game->l_sprite->img = ft_make_xpm_img(game, "./map/player6.xpm");
-	game->l_sprite->next = malloc(sizeof(t_sprite));
-	game->l_sprite = game->l_sprite->next;
+	// game->l_sprite->img = ft_make_xpm_img(game, "./map/player6.xpm");
+	// game->l_sprite->next = malloc(sizeof(t_sprite));
+	// game->l_sprite = game->l_sprite->next;
 	game->l_sprite->img = ft_make_xpm_img(game, "./map/player7.xpm");
 	game->l_sprite->next = malloc(sizeof(t_sprite));
 	game->l_sprite = game->l_sprite->next;
@@ -258,34 +258,50 @@ void	move_player(t_game *game)
 	static float i = 0;
 	if (game->flag == LEFT)
 	{
+		if(game->map.total_map[game->player.y / 64][(game->player.x - 64) / 64] == '1')
+			return ;
 		draw_wall(game);
 		draw_PCE(game);
 		game->l_sprite = game->l_sprite->next;
 		mlx_put_image_to_window(game->mlx, game->win, game->l_sprite->img, game->player.x - i, game->player.y);
-		i += 6.4;
+		i += 8;
 		if (i >= 64) 
 		{
 			game->flag = 0;
 			i = 0;
 			game->player.x -= 64;
 		}
+		if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
+		{
+			// game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+			game->player.collect++;
+		}
 	}
 	else if (game->flag == RIGHT)
 	{
+		if(game->map.total_map[game->player.y / 64][(game->player.x + 64) / 64] == '1')
+			return ;
 		draw_wall(game);
 		draw_PCE(game);
 		game->r_sprite = game->r_sprite->next;
 		mlx_put_image_to_window(game->mlx, game->win, game->r_sprite->img, game->player.x + i, game->player.y);
-		i += 6.4;
+		i += 8;
 		if (i >= 64) 
 		{
 			game->flag = 0;
 			i = 0;
 			game->player.x += 64;
 		}
+		if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
+		{
+			// game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+			game->player.collect++;
+		}
 	}
 	else if (game->flag == TOP)
 	{
+		if(game->map.total_map[(game->player.y - 64) / 64][game->player.x / 64] == '1')
+			return ;
 		draw_wall(game);
 		draw_PCE(game);
 		if (game->player.move_status == RIGHT)
@@ -298,16 +314,23 @@ void	move_player(t_game *game)
 			game->l_sprite = game->l_sprite->next;
 			mlx_put_image_to_window(game->mlx, game->win, game->l_sprite->img, game->player.x, game->player.y - i);
 		}
-		i += 6.4;
+		i += 8;
 		if (i >= 64) 
 		{
 			game->flag = 0;
 			i = 0;
 			game->player.y -= 64;
 		}
+		if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
+		{
+			// game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+			game->player.collect++;
+		}
 	}
 	else if (game->flag == BOTTOM)
 	{
+		if(game->map.total_map[(game->player.y + 64) / 64][game->player.x / 64] == '1')
+			return ;
 		draw_wall(game);
 		draw_PCE(game);
 		if (game->player.move_status == RIGHT)
@@ -320,12 +343,17 @@ void	move_player(t_game *game)
 			game->l_sprite = game->l_sprite->next;
 			mlx_put_image_to_window(game->mlx, game->win, game->l_sprite->img, game->player.x, game->player.y + i);
 		}
-		i += 6.4;
+		i += 8;
 		if (i >= 64) 
 		{
 			game->flag = 0;
 			i = 0;
 			game->player.y += 64;
+		}
+		if (game->map.total_map[game->player.y / 64][game->player.x / 64] == 'a')
+		{
+			// game->map.total_map[game->player.y / 64][game->player.x / 64] = 'c';
+			game->player.collect++;
 		}
 	}
 }
@@ -345,7 +373,10 @@ int main(int argc, char **argv)
 {
 	t_game	game;
 	if (argc != 2)
-		hk_error("Wrong Argument", &game);
+	{
+		ft_putendl_fd("WRONG ARUG", 2);
+		exit(0);	
+	}
 	hk_window(&game, argv);
 	game.mlx = mlx_init();
 	game.win = mlx_new_window(game.mlx, game.map.width * 64, game.map.height * 64, "JUNHYUKI IS CHRISTIAN!!");
