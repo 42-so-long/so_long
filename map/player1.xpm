@@ -217,7 +217,7 @@ static char *result[] = {
 "0X c #F8F7F6",
 "qX c #F9F8F7",
 "wX c #F7F9F8",
-"eX c #FFFFFF",
+"eX c #FFFFFFFF",
 /* pixels */
 "eXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXqXqXwXqXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeX",
 "eXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXqX8X1X;X=X=X&X&X$X}.XX;XqXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeXeX",
