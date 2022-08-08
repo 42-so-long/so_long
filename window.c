@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   window.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hojinjang <hojinjang@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/07 17:23:14 by hojinjang         #+#    #+#             */
+/*   Updated: 2022/08/07 17:31:02 by hojinjang        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 #include <stdio.h>
 
@@ -6,10 +18,10 @@ void	*hk_realloc(void *buf, int before_size, int after_size)
 	char	**src;
 	char	**dst;
 	int		idx;
-	src = (char **)buf;
-	dst = (char**)malloc((sizeof(char *) * after_size));
 
 	idx = 0;
+	src = (char **) buf;
+	dst = (char **) malloc((sizeof(char *) * after_size));
 	while (idx < before_size)
 	{
 		dst[idx] = src[idx];
@@ -29,7 +41,7 @@ char	*get_line(int fd)
 		return (0);
 	len = ft_strlen(line);
 	if (line[len - 1] == '\n')
-		line[len - 1] = 0;	
+		line[len - 1] = 0;
 	return (line);
 }
 
@@ -47,7 +59,6 @@ void	check_rec(t_game *game)
 		i++;
 	}
 }
-
 
 void	check_wall(t_game *game)
 {
@@ -70,7 +81,8 @@ void	check_wall(t_game *game)
 				width++;
 			}
 		}
-		else if (game->map.total_map[height][0] != '1' || game->map.total_map[height][game->map.width - 1] != '1')
+		else if (game->map.total_map[height][0] != '1'
+		|| game->map.total_map[height][game->map.width - 1] != '1')
 		{
 			hk_error("WALL IS NOT SURROUND BY WALL - height", game);
 			break ;
@@ -124,8 +136,8 @@ void	valid_map(t_game *game)
 
 void	map_init(t_game *game, char *line)
 {
-	game->map.height = 0;
 	game->map.width = ft_strlen(line);
+	game->map.height = 0;
 	game->map.c_cnt = 0;
 	game->map.p_cnt = 0;
 	game->map.e_cnt = 0;
@@ -163,10 +175,6 @@ void	hk_window(t_game *game, char **argv)
 	if (!ft_strnstr(argv[1], ".ber", ft_strlen(argv[1])))
 		hk_error("Wrong argument", game);
 	map_read(game, fd);
-	// game->map.row = hk_window_size(fd, &col) * 64;
-	// if (col <= 1)
-	// 	hk_error("Too short file content", game);
-	// game->map.col = col * 64;
 }
 
 
